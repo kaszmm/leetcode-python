@@ -14,7 +14,7 @@ class Solution:
                 newarr.append(num)
                 if sum(newarr)==target:
                     ans.append(newarr[:])
-                if sum(newarr)<=target:
+                if sum(newarr)<target:
                     res.append(newarr[:])
             begin=reslenght
         return ans
