@@ -17,15 +17,11 @@ class Solution:
         sortedTemp.sort()
         for i in range(len(temp)):
             if temp[i]!=sortedTemp[i]:
-                valToSwapAt=hashMap[sortedTemp[i]]
-                tempval=temp[valToSwapAt]
-                hashMap[temp[i]]=valToSwapAt
-                hashMap[temp[valToSwapAt]]=i
-                temp[i],temp[valToSwapAt]=temp[valToSwapAt],temp[i]
-                        
-                
-                
-                count+=1            
+                p = hashMap[sortedTemp[i]]
+                hashMap[sortedTemp[i]] = i
+                hashMap[temp[i]] = p
+                temp[i], temp[p]=temp[p], temp[i]
+                count+=1          
         return count  
             
             
