@@ -29,14 +29,11 @@ class Solution:
                 getDeadCircles(row,COLUMNS-1)
                 
         
-        for row in range(1,ROWS-1):
-            for col in range(1,COLUMNS-1):
-                if board[row][col]=="O":
-                    board[row][col]="X"
-        
         for row in range(ROWS):
             for col in range(COLUMNS):
-                if board[row][col]=="-":
+                if board[row][col]=="O":
+                    board[row][col]="X"
+                elif board[row][col]=="-":
                     board[row][col]="O"
         
         
