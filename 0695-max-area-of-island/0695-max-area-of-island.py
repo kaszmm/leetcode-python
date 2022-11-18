@@ -42,7 +42,7 @@ class Solution:
                     for r,c in directions:
                         if row+r>=0 and row+r<ROWS and col+c>=0 and col+c<COLUMNS and grid[row+r][col+c]>0:
                             area=union(row,col,row+r,col+c)
-                            maxArea=max(maxArea,area if area>0 else 1)
+                            maxArea=max(maxArea,area)
         return maxArea
                 
         
