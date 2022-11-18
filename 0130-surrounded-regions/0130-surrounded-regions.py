@@ -29,21 +29,11 @@ class Solution:
             if board[row][COLUMNS-1]=="O" and (row,COLUMNS-1) not in visitedCircles:
                 getDeadCircles(row,COLUMNS-1)
                 
-        def flipCircle(row,col):
-            if row<0 or row>=ROWS or col<0 or col>=COLUMNS or board[row][col]=="X" or (row,col) in visitedCircles:
-                return
-            board[row][col]="X"
-            visitedCircles.add((row,col))
-            flipCircle(row-1,col)
-            flipCircle(row+1,col)
-            flipCircle(row,col-1)
-            flipCircle(row,col+1)
-            return
         
         for row in range(1,ROWS-1):
             for col in range(1,COLUMNS-1):
                 if board[row][col]=="O" and (row,col) not in visitedCircles:
-                    flipCircle(row,col)
+                    board[row][col]="X"
         
         
         
