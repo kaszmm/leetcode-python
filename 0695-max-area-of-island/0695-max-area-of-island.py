@@ -1,48 +1,33 @@
 class Solution:
     def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        visited=set()
         maxArea=0
+        directions=[(1,0),(-1,0),(0,1),(0,-1)]
         ROWS=len(grid)
         COLUMNS=len(grid[0])
-    
-        parents=defaultdict()
-        rank=defaultdict()
-        directions=[(1,0),(-1,0),(0,1),(0,-1)]
+        def bfs(islandQueue:deque):
+            area=0
+            while islandQueue:
+                r,c=islandQueue.popleft()
+                if (r,c) in visited:
+                    continue
+                area+=1
+                visited.add((r,c))
+                for d1,d2 in directions:
+                    row=r+d1
+                    col=c+d2
+                    if row<0 or row>=ROWS or col<0 or col>=COLUMNS or grid[row][col]==0 or (row,col) in visited:
+                        continue
+                    islandQueue.append((row,col))
+            return area
         for row in range(ROWS):
             for col in range(COLUMNS):
-                if grid[row][col]>0:
-                    parents[(row,col)]=(row,col)
-                    rank[(row,col)]=1
-    
-        def find(r,c):
-            parent=parents[(r,c)]
-            while parent!=parents[parent]:
-                parents[parent]=parents[parents[parent]]
-                parent=parents[parent]
-            return parent
+                if grid[row][col]>0 and (row,col) not in visited:
+                    islandQueue=deque()
+                    islandQueue.append((row,col))
+                    area=bfs(islandQueue)
+                    maxArea=max(maxArea,area)
         
-        def union(r1,c1,r2,c2):
-            parent1=find(r1,c1)
-            parent2=find(r2,c2)
-            if parent1==parent2:
-                return rank[parent1]
-            if rank[parent1]>rank[parent2]:
-                rank[parent1]+=rank[parent2]
-                parents[parent2]=parent1
-                return rank[parent1]
-            else:
-                rank[parent2]+=rank[parent1]
-                parents[parent1]=parent2
-                return rank[parent2]
-    
-        for row in range(ROWS):
-            for col in range(COLUMNS):
-                if grid[row][col]>0:
-                    area=0
-                    maxArea=max(maxArea,1)
-                    for r,c in directions:
-                        if row+r>=0 and row+r<ROWS and col+c>=0 and col+c<COLUMNS and grid[row+r][col+c]>0:
-                            area=union(row,col,row+r,col+c)
-                            maxArea=max(maxArea,area)
         return maxArea
                 
         
