@@ -16,7 +16,8 @@ class Solution:
         def find(r,c):
             parent=parents[(r,c)]
             while parent!=parents[parent]:
-                parent=parents[parents[parent]]
+                parents[parent]=parents[parents[parent]]
+                parent=parents[parent]
             return parent
         
         def union(r1,c1,r2,c2):
