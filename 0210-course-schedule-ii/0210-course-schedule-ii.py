@@ -6,9 +6,8 @@ class Solution:
         
         doneCourses=set()
         res=[]
-        
         def dfs(visited,course):
-            if len(adj[course])==0:
+            if len(adj[course])==0 or course in doneCourses:
                 return True
             visited.add(course)
             for preq in adj[course].copy():
