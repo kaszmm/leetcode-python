@@ -19,6 +19,8 @@ class Solution:
                         doneCourses.add(preq)
                         res.append(preq)
                         adj[course].remove(preq)
+                    else:
+                        return False
             return len(adj[course])==0
         for i in range(numCourses):
             visited=set()
