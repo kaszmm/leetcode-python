@@ -3,27 +3,25 @@ class Solution:
         adj={i :set() for i in range(numCourses)}
         for course,preq in prerequisites:
             adj[course].add(preq)
-        
         doneCourses=set()
+        visited=set()
         res=[]
-        def dfs(visited,course):
-            if len(adj[course])==0 or course in doneCourses:
+        def dfs(course):
+            if course in doneCourses:
                 return True
+            if course in visited:
+                return False
             visited.add(course)
-            for preq in adj[course].copy():
-                if preq in doneCourses:
-                    adj[course].remove(preq)
-                else:
-                    if preq not in visited and dfs(visited,preq):
-                        doneCourses.add(preq)
-                        res.append(preq)
-                        adj[course].remove(preq)
-                    else:
-                        return False
-            return len(adj[course])==0
+            for preq in adj[course]:
+                if not dfs(preq):
+                    return False
+            res.append(course)
+            doneCourses.add(course)
+            visited.remove(course)
+            return True
+            
         for i in range(numCourses):
-            visited=set()
-            if i not in doneCourses and dfs(visited,i):
-                doneCourses.add(i)
-                res.append(i)
-        return res if len(doneCourses)==numCourses else []
+            visited=set()   #this used for detetcing cycles in graph
+            if not dfs(i):
+                return []
+        return res
