@@ -1,27 +1,29 @@
 class Solution:
     def findRedundantConnection(self, edges: List[List[int]]) -> List[int]:
-        adj=defaultdict(list)
-        def detectCycle(node):
-            queue=deque()
-            visited=set()
-            prevVisited=set()
-            queue.append(node)
-            visited.add(node)
-            while queue:
-                for i in range(len(queue)):
-                    curNode=queue.popleft()
-                    prevVisited.add(curNode)
-                    for neighbors in adj[curNode]:
-                        if neighbors not in prevVisited:
-                            if neighbors in visited:
-                                return True
-                            queue.append(neighbors)
-                            visited.add(neighbors)
-            return False
-
-        for edge in edges:
-            adj[edge[0]].append(edge[1])
-            adj[edge[1]].append(edge[0])
-            if detectCycle(edge[0]):
-                return edge
+        parents=[i for i in range(len(edges)+1)]
+        rank=[1]*(len(edges)+1)
         
+    
+        def find(p):
+            p=parents[p]
+            while p!=parents[p]:
+                parents[p]=parents[parents[p]]
+                p=parents[p]
+            return p
+        
+        def union(parent1,parent2):
+            p1=find(parent1)
+            p2=find(parent2)
+            if p1==p2:
+                return False
+            if rank[p2]>rank[p1]:
+                parents[p1]=p2
+                rank[p2]+=rank[p1]
+            else:
+                parents[p2]=p1
+                rank[p1]+=rank[p2]
+            return True
+        
+        for edge in edges:
+            if not union(edge[0],edge[1]):
+                return edge
