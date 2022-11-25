@@ -1,14 +1,20 @@
 class Solution:
     def ladderLength(self, beginWord: str, endWord: str, wordList: List[str]) -> int:
-        wordSet=set(wordList)
-        if endWord not in wordSet:
+        if endWord not in wordList:
             return 0
-        queue=deque()
+        adj=defaultdict(list)
         visited=set()
-        res=0
+        queue=deque()
+        
         queue.append(beginWord)
+        wordList.append(beginWord)
         visited.add(beginWord)
-        isConverted=False
+        
+        for word in wordList:
+            for i in range(len(word)):
+                newWord=word[:i]+"*"+word[i+1:]
+                adj[newWord].append(word)
+        res=0    
         while queue:
             res+=1
             for i in range(len(queue)):
@@ -16,9 +22,65 @@ class Solution:
                 if curWord==endWord:
                     return res
                 for j in range(len(curWord)):
-                    for k in range(97,123):
-                        newWord=curWord[:j]+chr(k)+curWord[j+1:]
-                        if newWord in wordSet and newWord not in visited:
-                            queue.append(newWord)
-                            visited.add(newWord)
+                    newWord=curWord[:j]+"*"+curWord[j+1:]
+                    for neighbor in adj[newWord]:
+                        if neighbor not in visited:
+                            queue.append(neighbor)
+                            visited.add(neighbor)
         return 0
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+    
+    
