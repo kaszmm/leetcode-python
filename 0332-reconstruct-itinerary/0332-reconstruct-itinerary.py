@@ -6,10 +6,13 @@ class Solution:
             adj[fr].append(to)
         
         res=[]
-        def dfs(node):
-            while adj[node]:
-                val=adj[node].pop()
-                dfs(val)
-            res.append(node)
-        dfs("JFK")
+        stack=["JFK"]
+        while stack:
+            if len(adj[stack[-1]])>0:
+                val= adj[stack[-1]][-1]
+                adj[stack[-1]].pop()
+                stack.append(val)
+            else:
+                res.append(stack[-1])
+                stack.pop()
         return res[::-1]
