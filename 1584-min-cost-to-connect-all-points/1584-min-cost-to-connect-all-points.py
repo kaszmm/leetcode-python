@@ -1,27 +1,37 @@
 class Solution:
     def minCostConnectPoints(self, points: List[List[int]]) -> int:
-        res = 0
-        n = len(points)
-        q = [(0, 0)]
-        dist = [float('inf')]*n
-        mst = set()
-        while q:
-            # 1. pop min node which is not in mst
-            w, min_idx = heapq.heappop(q)
-            if min_idx in mst:
-                continue # node was already added to the mst set
-                
-            # 2 add min node to mst
-            res += w
-            mst.add(min_idx)
-            
-            # 3. update min distance for neighbors in graph if not in mst and add to heap
-            for v in range(n):
-                if v not in mst:
-                    d = abs(points[v][0]-points[min_idx][0]) + abs(points[v][1]-points[min_idx][1])
-                    if d < dist[v]:
-                        dist[v] = d
-                        heapq.heappush(q, (d, v))
+        parents=[i for i in range(len(points)) ]
+        minHeap=[]
+        res=0
+        visited=set()
+        def find(p):
+            if p==parents[p]:
+                return p
+            return find(parents[p])
+        
+        def union(node1,node2):
+            p1=find(node1)
+            p2=find(node2)
+            if p1==p2:
+                return False
+            parents[p1]=p2
+            return True
+    
+        for i in range(len(points)):
+            for j in range(i+1,len(points)):
+                x1,y1=points[i][0],points[i][1]
+                x2,y2=points[j][0],points[j][1]
+                cost=abs(x1-x2)+abs(y1-y2)
+                minHeap.append([cost,(i,j)])
+        heapq.heapify(minHeap)
+        
+        nodeCount=0
+        while nodeCount<len(points)-1:
+            cost,cords=heapq.heappop(minHeap)
+            if union(cords[0],cords[1]):
+                visited.add((cords[0],cords[1]))
+                nodeCount+=1
+                res+=cost
         return res
         
             
