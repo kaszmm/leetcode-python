@@ -1,22 +1,19 @@
 class Solution:
     def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
-        visited=set()
-        adj=defaultdict(list)
-        minHeap=[[0,k]]
-        for trans,recei,delay in times:
-            adj[trans].append([delay,recei])
+        distances=[float("INF")]*(n+1)
+        result=0
+        distances[0],distances[k]=0,0
         
-        timeTaken=0
-        while minHeap and len(visited)<n:
-            delay,t =heapq.heappop(minHeap)
-            if t in visited:
-                continue;
-            visited.add(t)
-            timeTaken=max(timeTaken,delay)
-            for d,r in adj[t]:
-                if r not in visited:
-                    heapq.heappush(minHeap,[delay+d,r])
-        return timeTaken if len(visited)==n else -1
+        for i in range(1,n):
+            for trans,receive,weight in times:
+                distances[receive]=min(distances[receive],distances[trans]+weight)
+        
+        for cost in distances:
+            if cost==float("inf"):
+                return -1
+            result=max(result,cost)
+        return result
+                
             
             
             
